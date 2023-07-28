@@ -1,0 +1,69 @@
+
+
+
+.example-stepper {
+    margin-top: 8px;
+    margin: auto;
+    width: 100% !important;
+  }
+
+  .mat-tab{
+    width: 100%
+  }
+
+  mat-step {
+    width: 100%;
+    margin: auto;
+  }
+
+  form {
+    width: 100%;
+    margin: auto !important;
+  }
+
+.form-controls{
+  display: none;
+}
+  button {
+    margin: 10px;
+  }
+
+ 
+
+  mat-form-field {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .right-align {
+    text-align: right !important;
+  }
+
+  .example-container .mat-form-field+.mat-form-field {
+    margin-left: 8px;
+  }
+
+  .mat-mdc-radio-button~.mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+
+  .example-right-align {
+    text-align: right;
+  }
+
+.excel-upload{
+  width: 100%;
+  margin: auto;
+}
+.bulk-template{
+  padding: 1em;
+  background-color: blue;
+  color: white;
+  border-radius: 0.5em;
+  text-decoration: none;
+  text-align: center;
+  margin: 0.5em 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  
+}
+  

@@ -1,0 +1,2317 @@
+<br />
+<mat-divider></mat-divider>
+<br />
+<div *ngIf="loading">
+  <p><small>Loading, please wait...</small></p>
+  <p>
+    <mat-progress-bar mode="query"></mat-progress-bar>
+  </p>
+</div>
+<mat-card-header class="breadcrumb">
+  <div>
+    <a routerLink="/administration" skipLocationChange="">Dashboard /</a>
+    <a routerLink="/" skipLocationChange="">Employee Management / </a>
+    {{ titleRef }}
+  </div>
+  <div [align]="'end'" class="col-6 col-md-6 col-sm-12">
+    <a
+      class="bulk-template"
+      href="assets/bulkUpload.xlsx"
+      download="bulkEmployeeUpload.xlsx"
+      >Excel Bulk Upload</a
+    >
+  </div>
+</mat-card-header>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab class="mat-tab" label="{{ matTabTitle }}">
+    <form [formGroup]="formData">
+      <mat-stepper
+        class="example-stepper mat-elevation-z10"
+        [orientation]="(stepperOrientation | async)!"
+      >
+        <mat-step label="Basic Info.">
+          <hr />
+          <div class="row">
+            <!-- <div class="col-md-4 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>PF Number</mat-label>
+                                <input type="text" maxlength="12" minlength="1" matInput formControlName="empNo">
+                                <mat-error *ngIf="
+                                formData.controls['empNo'].hasError('required')">
+                                    PF number required!!
+                                </mat-error>
+                                <mat-error *ngIf="formData.get('empNo').hasError('minlength' || 'maxLength')
+                                 ">Please enter a valid PF number.
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+            <!-- <div class="col-md-4 col-sm-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Choose Applicant</mat-label>
+                                <input matInput formControlName="firstName" placeholder="First Name">
+                                <mat-error *ngIf="formData.controls['firstName'].hasError('required')">
+                                    Employee required!!</mat-error>
+                                <mat-icon matSuffix (click)="applicantLookUp()" color="primary">person_add</mat-icon>
+                            </mat-form-field>
+                        </div> -->
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input
+                  type="name"
+                  matInput
+                  minlength="3"
+                  maxlength="40"
+                  placeholder="e.g Doe"
+                  formControlName="firstName"
+                />
+                <mat-error
+                  *ngIf="formData.controls['firstName'].hasError('required')"
+                >
+                  First name required!!
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    formData
+                      .get('firstName')
+                      .hasError('minlength' || 'maxLength')
+                  "
+                  >Please enter a valid name.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Middle Name</mat-label>
+                <input
+                  type="name"
+                  matInput
+                  placeholder="e.g Smith"
+                  minlength="3"
+                  maxlength="40"
+                  formControlName="middleName"
+                />
+                <mat-error
+                  *ngIf="
+                    formData
+                      .get('middleName')
+                      .hasError('minlength' || 'maxLength')
+                  "
+                  >Middle name invalid!!.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input
+                  type="name"
+                  matInput
+                  placeholder="e.g John"
+                  minlength="3"
+                  maxlength="40"
+                  formControlName="lastName"
+                />
+                <mat-error
+                  *ngIf="formData.controls['lastName'].hasError('required')"
+                >
+                  Last name required!!
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    formData
+                      .get('lastName')
+                      .hasError('minlength' || 'maxLength')
+                  "
+                  >Please enter a valid name.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Date Of Birth</mat-label>
+                <input
+                  
+                  formControlName="dob"
+                  matInput
+                  [matDatepicker]="datePicker"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datePicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datePicker color="primary"></mat-datepicker>
+                <!-- <mat-error *ngIf="formData.controls['dateFormControl'].hasError('matDatepickerParse')">
+                  Date of Birth Field required!!
+                </mat-error> -->
+              </mat-form-field>
+              
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>National ID NO.</mat-label>
+                <input
+                  type="text"
+                  formControlName="nationalId"
+                  matInput
+                  maxlength="8"
+                  minlength="7"
+                  pattern="[0-9]+"
+                  placeholder="e.g 12345678"
+                />
+                <mat-error
+                  *ngIf="formData.controls['nationalId'].hasError('required')"
+                >
+                  Id NO. required!!
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    formData
+                      .get('nationalId')
+                      .hasError('minlength' || 'maxLength' || 'pattern')
+                  "
+                  >Please enter a valid ID NO.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Religion</mat-label>
+                <mat-select formControlName="religion">
+                  <mat-option
+                    [value]="religion"
+                    *ngFor="let religion of religionArray"
+                    >{{ religion }}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="formData.controls['religion'].hasError('required')"
+                >
+                  Religion field required!!
+                </mat-error>
+              </mat-form-field>
+            </div>
+           
+            <div class="col-md-3 col-sm-12">
+              <mat-label>Choose Gender</mat-label>
+              <div [align]="'center'">
+                <mat-radio-group formControlName="gender">
+                  <mat-radio-button color="primary" value="male"
+                    >Male</mat-radio-button
+                  >
+                  <mat-radio-button color="warn" value="female"
+                    >Female</mat-radio-button
+                  >
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Marital Status</mat-label>
+                <mat-select formControlName="maritalStatus" (selectionChange)="marriageStatus($event)">
+                  <mat-option
+                    *ngFor="let maritalStatus of maritalStatusArray"
+                    [value]="maritalStatus"
+                    >{{ maritalStatus }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formData.get('maritalStatus').hasError('required')">
+                                    Marital Status field required!!
+                                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <form class="form" [formGroup]="marriageCertFormData">
+                <input
+                  type="file"
+                  class="form-controls"
+                  (change)="documentsUpload($event)"
+                  accept=".pdf"
+                  #fileUpload
+                />
+              </form>
+              <div class="file-upload" *ngIf="showMarriageCertInput">
+                {{ this.marriageFileName || "No file uploaded yet." }}
+
+                <button
+                  mat-mini-fab
+                  color="primary"
+                  class="upload-btn"
+                  (click)="fileUpload.click()"
+                >
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button
+              mat-raised-button
+              routerLink="/administration"
+              color="accent"
+            >
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Home address">
+          <hr />
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nationality</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g KENYAN"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="nationality"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['nationality'].hasError('required')
+                    "
+                  >
+                    Nationality required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('nationality')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Enter a valid Nationality!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>County of Birth</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g NAIROBI"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="county"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['county'].hasError('required')"
+                  >
+                    County required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('county')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Enter a valid County Name!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Sub County</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g WESTLANDS"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="subCounty"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['subCounty'].hasError('required')"
+                  >
+                    Sub-county required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('subCounty')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Enter a valid Sub County Name!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Current Residential Country</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g KENYA"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="residentialCountry"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['residentialCountry'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Current residential country required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('residentialCountry')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Enter a valid Sub Residential Country Name!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Current Residential County</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g WESTLANDS"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="residentialCounty"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['residentialCounty'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Current residential county required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('residentialCounty')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Enter a valid Sub Residential County Name!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Current Residential Sub county</mat-label>
+                  <mat-label>Sub County</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g WESTLANDS"
+                    minlength="3"
+                    maxlength="40"
+                    formControlName="residentialSubCounty"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['residentialSubCounty'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Current residential Sub County required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('residentialSubCounty')
+                        .hasError('minlength' || 'maxLength')
+                    "
+                    >Eenter a valid Sub Residential Sub County Name!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Postal Address</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="postalAddress"
+                    minlength="3"
+                    maxlength="100"
+                    placeholder="e.g P.O Box 1"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['postalAddress'].hasError('required')
+                    "
+                  >
+                    Postal Address required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData.controls['residentialSubCounty'].hasError(
+                        'minlength' || 'maxLength'
+                      )
+                    "
+                  >
+                    Postal Address required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Postal Code</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="postalCode"
+                    pattern="[0-9]+"
+                    minlength="3"
+                    maxlength="12"
+                    placeholder="e.g 00100"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['postalCode'].hasError('required')"
+                  >
+                    Postal code required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('postalCode')
+                        .hasError('minlength' || 'maxLength' || 'pattern')
+                    "
+                    >Please enter a valid postal code!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>City/Town</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g Nairobi City"
+                    formControlName="city"
+                    minlength="3"
+                    maxlength="100"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['city'].hasError('required')"
+                  >
+                    City or Town required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData.get('city').hasError('minlength' || 'maxLength')
+                    "
+                    >Please enter a valid City or Town!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Contact Info.">
+          <hr />
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Personal Phone Number</mat-label>
+                  <input
+                    type="phone"
+                    matInput
+                    minlength="10"
+                    maxlength="12"
+                    pattern="[0-9]+"
+                    placeholder="e.g 0712345678"
+                    formControlName="personalPhone"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['personalPhone'].hasError('required')
+                    "
+                  >
+                    Personal phone number required.
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('personalPhone')
+                        .hasError('minlength' || 'maxlength' || 'pattern')
+                    "
+                    >Please enter a valid phone number.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Alternative Phone</mat-label>
+                  <input
+                    type="phone"
+                    matInput
+                    minlength="10"
+                    maxlength="12"
+                    pattern="[0-9]+"
+                    placeholder="e.g 0712345678"
+                    formControlName="alternativePhone"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('alternativePhone')
+                        .hasError('minlength' || 'maxlength' || 'pattern')
+                    "
+                    >Alternative phone number invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Personal Email Address</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                    placeholder="e.g abc123@gmailcom"
+                    formControlName="personalEmail"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['personalEmail'].hasError('required')
+                    "
+                  >
+                    Personal e-mail address required!!
+                  </mat-error>
+                  <mat-error
+                    *ngIf="formData.get('personalEmail').hasError('pattern')"
+                    >Personal e-mail address invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Alternative Email</mat-label>
+                  <input
+                    type="email"
+                    matInput
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                    placeholder="e.g abc123@gmailcom"
+                    formControlName="alternativeEmail"
+                  />
+                  <mat-error
+                    *ngIf="formData.get('alternativeEmail').hasError('pattern')"
+                    >Alternative e-mail address invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Next Of Kin Info.">
+          <hr />
+          <form
+            action=""
+            class="form"
+            [formGroup]="nextOfKinForm"
+            *ngIf="showNextOfKinForm"
+          >
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="Name of intendended next of kin"
+                    formControlName="name"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone Number</mat-label>
+                  <input
+                    type="mobile"
+                    minlength="10"
+                    maxlength="12"
+                    pattern="[0-9]+"
+                    matInput
+                    placeholder="e.g 0719431185"
+                    formControlName="phoneNumber"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input
+                    type="email"
+                    matInput
+                    formControlName="email"
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                    placeholder="e.g abc123@gmailcom"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Street Address</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g Kahawa Wendai, Nairobi"
+                    formControlName="address"
+                    minlength="5"
+                    maxlength="50"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Relationship</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g Brother"
+                    formControlName="relationship"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="showButtons">
+              <button
+                *ngIf="addButton"
+                (click)="addNextOfKin()"
+                class="pull-right btn btn-success btn-sm"
+                [disabled]="!nextOfKinForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Add Kin
+              </button>
+              <button
+                *ngIf="editButton"
+                class="pull-right btn btn-primary btn-sm"
+                (click)="updateNextOfKin()"
+                [disabled]="!nextOfKinForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Update Next of Kin
+              </button>
+            </div>
+          </form>
+          <div class="row table-action-row">
+            <div class="col-md-6 col-sm-12">
+              <strong>Next of Kin List</strong>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <input
+                class="pull-right search form-control"
+                (keyup)="nextOfKinFilter($event)"
+                placeholder="Search..."
+                #input
+              />
+            </div>
+          </div>
+          <br />
+          <div class="table-row">
+            <table
+              mat-table
+              matSort
+              matTableExporter
+              [dataSource]="nextOfKinDataSource"
+            >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Next Of Kin Name
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="relationship">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Relationship
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.relationship }}</td>
+              </ng-container>
+              <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Contact Number
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.phoneNumber }}</td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Email Address
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+              </ng-container>
+              <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Street Address
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    color="primary"
+                    (click)="editKinItem(row)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    (click)="deleteNxtKinItem(row)"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="nextOfKinColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: nextOfKinColumns"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator
+            #nextOfKinPaginator="matPaginator"
+            [pageSize]="5"
+            [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+            aria-label="Select page of Employee Experience"
+          ></mat-paginator>
+          <br />
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step label="Dependants Info">
+          <hr />
+          <form action="" [formGroup]="dependantForm">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-3 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Full Name</mat-label>
+                    <input
+                    (input)="displayDependantFileInput($event)"
+                      type="text"
+                      matInput 
+                      placeholder="Name of intendended Dependant"
+                      formControlName="dependantName"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Date of Birth</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      [matDatepicker]="birth_date"
+                      placeholder="dd/mm/yyyy"
+                      formControlName="dependantDob"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="birth_date"
+                      ><mat-datepicker
+                        #birth_date
+                        color="primary"
+                      ></mat-datepicker>
+                    </mat-datepicker-toggle>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Dependant Phone</mat-label>
+                    <input
+                      type="phone"
+                      matInput
+                      placeholder="e.g 0712345678"
+                      formControlName="dependantPhone"
+                    />
+                    <!-- <mat-error *ngIf="dependantForm.hasError('minlength' || 'maxlength' || 'pattern')
+                                             ">Dependant phone number invalid!!
+                                            </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Dependant Email </mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="e.g abc123@gmail.com"
+                      formControlName="dependantEmail"
+                    />
+                    <!-- <mat-error *ngIf="dependantForm.hasError('pattern')">
+                                          Please enter a valid email address
+                                        </mat-error> -->
+                  </mat-form-field>
+                </div>
+              <div class="col-md-2 col-sm-12">
+              <form [formGroup]="dependantsDocs">
+                <p  *ngIf="showDependantsDocInputField"><mat-label>Dependant's Birth Certificate</mat-label></p>
+                <p>
+                  <input
+                    type="file"
+                    class="form-controls"
+                    accept=".pdf"
+                    (change)="dependantCertUpload($event)"
+                    #fileUpload2 
+                  />
+                </p>
+    
+                <div class="file-upload" *ngIf="showDependantsDocInputField">
+                  {{ this.fileName || "No file uploaded yet." }}
+    
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    class="upload-btn"
+                    (click)="fileUpload2.click()"
+                  >
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                </div>
+              </form>
+            </div> 
+              </div>
+            </div>
+
+            <div *ngIf="showButtons">
+              <button
+                *ngIf="addButton"
+                (click)="addDependant()"
+                (click)="addDependantsDocs()"
+                class="pull-right btn btn-success btn-sm"
+                [disabled]="!dependantForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Add Dependant
+              </button>
+              <button
+                *ngIf="editButton"
+                class="pull-right btn btn-primary btn-sm"
+                (click)="updateDependantItem()"
+                [disabled]="!dependantForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Update Dependant
+              </button>
+            </div>
+          </form>
+          
+<mat-divider></mat-divider>
+          <div class="row table-action-row">
+            <div class="col-md-6 col-sm-12">
+              <strong>Dependants List</strong>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <input
+                class="pull-right search form-control"
+                (keyup)="dependantFilter($event)"
+                placeholder="Search..."
+                #input
+              />
+            </div>
+          </div>
+          <br />
+          <div class="table-row">
+            <table
+              mat-table
+              matSort
+              matTableExporter
+              [dataSource]="dependantDataSource"
+            >
+
+<mat-divider></mat-divider>
+
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dependantName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Dependant Name
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.dependantName }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dependantDob">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Dependant D.O.B
+                </th>
+                <td mat-cell *matCellDef="let row" >
+                  {{ row.dependantDob | date }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dependantPhone">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Dependant Phone
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.dependantPhone }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dependantEmail">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Dependant Email
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.dependantEmail }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    color="primary"
+                    (click)="editDependantItem(row)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    (click)="deleteDependantItem(row)"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="dependantsColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: dependantsColumns"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator
+            #dependantPaginator="matPaginator"
+            [pageSize]="5"
+            [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+            aria-label="Select page of Dependant"
+          ></mat-paginator>
+          <br />
+          <!-- <div [align]="'end'">
+                    <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                    <button mat-raised-button color="primary" matStepperNext>Next</button>
+                </div> -->
+     <div *ngIf="showFilledDependantsTable">
+          <div class="row table-action-row">
+            <div class="col-md-6 col-sm-12">
+              <strong>Dependants Documents List</strong>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <input
+                class="pull-right search form-control"
+                (keyup)="dependantDocsFilter($event)"
+                placeholder="Search..."
+                #input
+              />
+            </div>
+          </div>
+          <br />
+          <div class="table-row">
+            <table
+              mat-table
+              matSort
+              matTableExporter
+              [dataSource]="dataSource"
+            >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fileName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  File Name
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.file_name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="documentTitle">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Document Title
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.document_title }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="documentType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Document Type
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.document_type }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    (click)="deleteDependantDocItem(row)"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                   
+                    (click)="convertAndDownloadPdf()"
+                    color="primary"
+                  >
+                    <mat-icon>folder</mat-icon>
+                  </button>
+
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="dependantsDocsColumns"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: dependantsDocsColumns"
+              ></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator
+            #dependantsDocsPaginator="matPaginator"
+            [pageSize]="5"
+            [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+            aria-label="Select page of Dependant"
+          ></mat-paginator>
+          <br />
+          <div [align]="'end'">
+            <button mat-raised-button color="accent" matStepperPrevious>
+              Back
+            </button>
+            <button mat-raised-button color="primary" matStepperNext>
+              Next
+            </button>
+          </div>
+        </div>
+        </mat-step>
+
+        <mat-step label="Education Info.">
+          <hr />
+          <form [formGroup]="formData">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-4 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Higher Level of education</mat-label>
+                    <mat-select formControlName="highestEducation">
+                      <mat-option
+                        [value]="highestEducation"
+                        *ngFor="let highestEducation of educationLevelArray"
+                      >
+                        {{ highestEducation }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        formData.controls['highestEducation'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Higher Level of education required!!
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Course Program</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Enter the course Program"
+                      formControlName="courseProgram"
+                    />
+                    <mat-error
+                      *ngIf="
+                        formData.controls['courseProgram'].hasError('required')
+                      "
+                    >
+                      Course program required!!
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enrollment Status</mat-label>
+                    <mat-select formControlName="educationEnrollment">
+                      <mat-option
+                        [value]="enrollmentStatus"
+                        *ngFor="
+                          let enrollmentStatus of educationEnrollmentsArray
+                        "
+                        >{{ enrollmentStatus }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        formData.controls['educationEnrollment'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Enrollment status required!!
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+          <hr />
+          <div class="mb-3">
+            <form [formGroup]="empEducationForm" *ngIf="showEducationForm">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Institution Level</mat-label>
+                      <mat-select formControlName="institutionLevel">
+                        <mat-option
+                          [value]="institutionLevel"
+                          *ngFor="
+                            let institutionLevel of curentEducationLevelArray
+                          "
+                          >{{ institutionLevel }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Institution Name</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        placeholder="Enter institution Name"
+                        formControlName="institutionName"
+                        minlength="3"
+                        maxlength="120"
+                      />
+                      <mat-error
+                        *ngIf="
+                          empEducationForm
+                            .get('institutionName')
+                            .hasError('minlength' || 'maxlength')
+                        "
+                        >Institution Name invalid!!
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Certification</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        placeholder="Enter the certification name"
+                        formControlName="awardCertificate"
+                        minlength="3"
+                        maxlength="120"
+                      />
+                      <mat-error
+                        *ngIf="
+                          empEducationForm
+                            .get('awardCertificate')
+                            .hasError('minlength' || 'maxlength')
+                        "
+                        >Certification Name invalid!!
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>GPA/Class Score</mat-label>
+                      <mat-select formControlName="gpaScore">
+                        <mat-option
+                          [value]="gpaScore"
+                          *ngFor="let gpaScore of gpaScoreArray"
+                          >{{ gpaScore }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Year Enroll ON.</mat-label>
+                      <input
+                        type="phone"
+                        matInput
+                        placeholder="e.g 2015"
+                        formControlName="enrollOn"
+                        minlength="4"
+                        maxlength="4"
+                      />
+                      <mat-error
+                        *ngIf="
+                          empEducationForm
+                            .get('enrollOn')
+                            .hasError('minlength' || 'maxlength')
+                        "
+                        >Year Enroll On invalid!!
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3 col-sm-12">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Year Graduated</mat-label>
+                      <input
+                        type="phone"
+                        matInput
+                        placeholder="e.g 2020"
+                        formControlName="graduatedOn"
+                        minlength="4"
+                        maxlength="4"
+                        (keyup)="yearCheck($event)"
+                      />
+                      <mat-error
+                        *ngIf="
+                          empEducationForm
+                            .get('graduatedOn')
+                            .hasError('minlength' || 'maxlength')
+                        "
+                        >Year Graduated On invalid!!
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                      <div class="col-md-6 col-sm-12">
+                        <mat-label>Certificate File</mat-label>
+                      </div>
+                      <div class="col-md-6 col-sm-12">
+                        <input
+                          class="form-controls"
+                          type="file"
+                          required
+                          (change)="certUpload($event)"
+                        />
+                        <div class="form-group">
+                          <mat-hint
+                            ><small>Only png, jpeg accepted</small></mat-hint
+                          >
+                        </div>
+                        <div class="form-group">
+                          <img
+                            [src]="imageSrc"
+                            *ngIf="imageSrc"
+                            class="col-md-12 img-preview"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="showButtons">
+                <button
+                  *ngIf="addButton"
+                  (click)="addEmpEducation()"
+                  class="pull-right btn btn-success btn-sm"
+                  [disabled]="!empEducationForm.valid || disableAddButton"
+                  mat-raised-button
+                  color="primary"
+                  type="button"
+                >
+                  Add Education
+                </button>
+                <button
+                  *ngIf="editButton"
+                  class="pull-right btn btn-primary btn-sm"
+                  (click)="updateEmpEducation()"
+                  [disabled]="!empEducationForm.valid || disableAddButton"
+                  mat-raised-button
+                  color="primary"
+                  type="button"
+                >
+                  Update Education
+                </button>
+              </div>
+            </form>
+            <div class="row table-action-row">
+              <div class="col-md-6 col-sm-12">
+                <strong>Employee Education List</strong>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <input
+                  class="pull-right search form-control"
+                  (keyup)="educationFilter($event)"
+                  placeholder="Search..."
+                  #input
+                />
+              </div>
+            </div>
+            <br />
+            <div class="table-row">
+              <table
+                mat-table
+                matSort
+                matTableExporter
+                [dataSource]="educationDataSource"
+              >
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    {{ i + 1 }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="institutionName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Institution Name
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    {{ row.institutionName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="institutionLevel">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Institution Level
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    {{ row.institutionLevel }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="enrollOn">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Enroll On
+                  </th>
+                  <td mat-cell *matCellDef="let row">{{ row.enrollOn }}</td>
+                </ng-container>
+                <ng-container matColumnDef="graduatedOn">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Graduated On
+                  </th>
+                  <td mat-cell *matCellDef="let row">{{ row.graduatedOn }}</td>
+                </ng-container>
+                <ng-container matColumnDef="gpaScore">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Gpa Score
+                  </th>
+                  <td mat-cell *matCellDef="let row">{{ row.gpaScore }}</td>
+                </ng-container>
+                <ng-container matColumnDef="awardCertificate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Certificate
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    {{ row.awardCertificate }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Action
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <button
+                      mat-icon-button
+                      [disabled]="disableActions"
+                      color="primary"
+                      (click)="editEduItem(row)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      [disabled]="disableActions"
+                      (click)="deleteEduItem(row)"
+                      color="warn"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="educationColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: educationColumns"
+                ></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="4">
+                    No data matching the filter "{{ input.value }}"
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <mat-paginator
+              #educationPaginator="matPaginator"
+              [pageSize]="5"
+              [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+              aria-label="Select page of Employee Education"
+            ></mat-paginator>
+          </div>
+          <br />
+          <div [align]="'end'">
+            <button mat-raised-button color="accent" matStepperPrevious>
+              Back
+            </button>
+            <button mat-raised-button color="primary" matStepperNext>
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Exprience Info.">
+          <hr />
+          <form
+            action=""
+            class="form"
+            [formGroup]="workExpForm"
+            *ngIf="showWorkExpForm"
+          >
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Company Name</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g Kenya Meat Commission"
+                    formControlName="companyName"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Work Position</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g Manager"
+                    formControlName="workPosition"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Time taken</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g 12 Months"
+                    formControlName="timeTaken"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="showButtons">
+              <button
+                *ngIf="addButton"
+                (click)="addWorkExp()"
+                class="pull-right btn btn-success btn-sm"
+                [disabled]="!workExpForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Add Experience
+              </button>
+              <button
+                *ngIf="editButton"
+                class="pull-right btn btn-primary btn-sm"
+                (click)="updateWorkExp()"
+                [disabled]="!workExpForm.valid || disableAddButton"
+                mat-raised-button
+                color="primary"
+                type="button"
+              >
+                Update Experience
+              </button>
+            </div>
+          </form>
+          <div class="row table-action-row">
+            <div class="col-md-6 col-sm-12">
+              <strong>Work Experience List</strong>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <input
+                class="pull-right search form-control"
+                (keyup)="experienceFilter($event)"
+                placeholder="Search..."
+                #input
+              />
+            </div>
+          </div>
+          <br />
+          <div class="table-row">
+            <table
+              mat-table
+              matSort
+              matTableExporter
+              [dataSource]="experienceDataSource"
+            >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="companyName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Company Name
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.companyName }}</td>
+              </ng-container>
+              <ng-container matColumnDef="workPosition">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Work Position
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.workPosition }}</td>
+              </ng-container>
+              <ng-container matColumnDef="timeTaken">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Time Taken
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.timeTaken }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    color="primary"
+                    (click)="editItem(row)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [disabled]="disableActions"
+                    (click)="deleteItem(row)"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="experienceColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: experienceColumns"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                  No data matching the filter "{{ input.value }}"
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator
+            #experiencePaginator="matPaginator"
+            [pageSize]="5"
+            [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+            aria-label="Select page of Employee Experience"
+          ></mat-paginator>
+          <br />
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Reference Info.">
+          <div class="container-fluid">
+            <div class="col-md-6 col-sm-12">
+              <strong>First Reference Info.</strong>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name</mat-label>
+                  <input
+                    type="name"
+                    matInput
+                    placeholder="e.g John Smith"
+                    formControlName="firstRefName"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Company/Institution</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g E&M Tech"
+                    formControlName="firstRefCompany"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input
+                    type="mobile"
+                    matInput
+                    minlength="10"
+                    maxlength="20"
+                    placeholder="e.g 0712345678"
+                    formControlName="firstRefPhone"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('firstRefPhone')
+                        .hasError('minlength' || 'maxlength')
+                    "
+                    >Please enter a valid phone number.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input
+                    type="email"
+                    matInput
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                    placeholder="e.g firstrefemail@gmailcom"
+                    formControlName="firstRefEmail"
+                  />
+                  <mat-error
+                    *ngIf="formData.get('firstRefEmail').hasError('pattern')"
+                    >Personal e-mail address invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <strong>Second Reference Info.</strong>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name</mat-label>
+                  <input
+                    type="name"
+                    matInput
+                    placeholder="e.g John Smith"
+                    formControlName="secondRefName"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Company/Institution</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="e.g E&M Tech"
+                    formControlName="secondRefCompany"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input
+                    type="mobile"
+                    matInput
+                    minlength="10"
+                    maxlength="20"
+                    placeholder="e.g 0712345678"
+                    formControlName="secondRefPhone"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('secondRefPhone')
+                        .hasError('minlength' || 'maxlength')
+                    "
+                    >Please enter a valid phone number.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input
+                    matInput
+                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                    placeholder="e.g secondrefemail@gmailcom"
+                    formControlName="secondRefEmail"
+                  />
+                  <mat-error
+                    *ngIf="formData.get('secondRefEmail').hasError('pattern')"
+                    >Personal e-mail address invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Job Info.">
+          <hr />
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Department</mat-label>
+                  <mat-select formControlName="departmentId">
+                    <mat-option
+                      *ngFor="let departments of departmnetData"
+                      [value]="departments.id"
+                    >
+                      {{ departments.departmentName }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="formData.get('departmentId').hasError('required')"
+                  >
+                    Department field required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <!-- <mat-form-field class="full-width" appearance="outline">
+                                    <mat-label>Branches</mat-label>
+                                    <mat-select formControlName="branchName">
+                                        <mat-option *ngFor="let branch of branchData" [value]="branch.branchName">
+                                            {{
+                                            branch.branchName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="formData.get('branchName').hasError('required')">
+                                        Location field required!!
+                                    </mat-error>
+                                </mat-form-field> -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Job Group</mat-label>
+                  <mat-select formControlName="jobGroupId">
+                    <mat-option
+                      *ngFor="let element of this.jobGroupArray"
+                      [value]="element.id"
+                      >{{ element.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="formData.get('jobGroupId').hasError('required')"
+                  >
+                    Job Group field required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Work Email</mat-label>
+                  <input matInput type="email" formControlName="workMail" />
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+             
+                <mat-form-field appearance="outline">
+                  <mat-label>Occupation / Role</mat-label>
+                  <mat-select formControlName="organizationRoleId">
+                    <mat-option
+                      *ngFor="let element of this.jobRoleArray"
+                      [value]="element.id"
+                      >{{ element.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="formData.get('organizationRoleId').hasError('required')"
+                  >
+                    Organizational Role required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+           
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Enrollment Status</mat-label>
+                  <mat-select formControlName="enrollmentStatus">
+                    <mat-option
+                      *ngFor="let enrollmentStatus of enrollmentStatusArray"
+                      [value]="enrollmentStatus"
+                      (change)="onEnrollmentStatusChange()"
+                    >
+                      {{ enrollmentStatus }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      formData.controls['enrollmentStatus'].hasError('required')
+                    "
+                  >
+                    Enrollment status required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Choose Start Date</mat-label>
+                  <input
+                    formControlName="enrollmentStartDate"
+                    matInput
+                    [matDatepicker]="start_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="start_date"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #start_date color="primary"></mat-datepicker>
+                  <mat-error
+                    *ngIf="
+                      formData.controls['enrollmentStartDate'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Start Date Field required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Choose End Date</mat-label>
+                  <input
+                    formControlName="enrollmentEndDate"
+                    matInput
+                    [matDatepicker]="end_date"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="end_date"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #end_date color="primary"></mat-datepicker>
+                  <mat-error
+                    *ngIf="
+                      formData.controls['enrollmentEndDate'].hasError(
+                        'required'
+                      )
+                    "
+                    >End Date Field required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12"></div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button mat-raised-button matStepperNext color="primary">
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Salary Info.">
+          <hr />
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Name</mat-label>
+                  <input
+                    matInput
+                    placeholder="e.g Kenya Commercial Bank Limited"
+                    minlength="3"
+                    maxlength="60"
+                    formControlName="bankName"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['bankName'].hasError('required')"
+                  >
+                    Bank name required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Account Number</mat-label>
+                  <input
+                    matInput
+                    placeholder="e.g 011111111"
+                    minlength="4"
+                    maxlength="20"
+                    pattern="[0-9]+"
+                    formControlName="bankAccount"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['bankAccount'].hasError('required')
+                    "
+                  >
+                    Bank Account NO. required!!
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('bankAccount')
+                        .hasError('minlength' || 'maxlength' || 'pattern')
+                    "
+                    >Bank Account Number invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12" *ngIf="confirmBankAccount">
+                <mat-form-field appearance="outline">
+                  <mat-label>Confirm Bank Account Number</mat-label>
+                  <input
+                    (keyup)="onKeyUp($event)"
+                    matInput
+                    placeholder="e.g 011111111"
+                    minlength="4"
+                    maxlength="20"
+                    pattern="[0-9]+"
+                    formControlName="confirmBankAccount"
+                  />
+                  <mat-error
+                    *ngIf="
+                      formData.controls['confirmBankAccount'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Bank Account NO. required!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Employee KRA NO.</mat-label>
+                  <input
+                    matInput
+                    placeholder="e.g A01111111B"
+                    minlength="4"
+                    maxlength="20"
+                    formControlName="kraNo"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['kraNo'].hasError('required')"
+                  >
+                    KRA field required!!
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData.get('kraNo').hasError('minlength' || 'maxlength')
+                    "
+                    >KRA NO. invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>NHIF N0.</mat-label>
+                  <input
+                    matInput
+                    placeholder="e.g NHIF001"
+                    minlength="4"
+                    maxlength="20"
+                    formControlName="nhifNo"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['nhifNo'].hasError('required')"
+                  >
+                    NHIF field required!!
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('nhifNo')
+                        .hasError('minlength' || 'maxlength')
+                    "
+                    >NHIF NO. invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>NSSF NO</mat-label>
+                  <input
+                    matInput
+                    placeholder="e.g NSSF001"
+                    minlength="4"
+                    maxlength="20"
+                    formControlName="nssfNo"
+                  />
+                  <mat-error
+                    *ngIf="formData.controls['nssfNo'].hasError('required')"
+                  >
+                    NSSF field required!!
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      formData
+                        .get('nssfNo')
+                        .hasError('minlength' || 'maxlength')
+                    "
+                    >NSSF NO. invalid!!
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-label> <strong>TOTAL REMITTANCE</strong></mat-label>
+            <br />
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Employee Basic Salary</mat-label>
+                  <input
+                    matInput
+                    class="example-right-align"
+                    formControlName="basicSalary"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Actual Retirement Scheme</mat-label>
+                  <input
+                    matInput
+                    class="example-right-align"
+                    formControlName="dcrsActualE2"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Total Non Cash Benefits</mat-label>
+                  <input
+                    matInput
+                    class="right-align"
+                    placeholder="0"
+                    formControlName="totalNonCashBenefit"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Value of Quarters</mat-label>
+                  <input
+                    matInput
+                    class="right-align"
+                    placeholder="0"
+                    formControlName="valueOfQuarters"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Owner Occupied Interests</mat-label>
+                  <input
+                    matInput
+                    class="right-align"
+                    placeholder="0"
+                    formControlName="ownerOccupiedInterests"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Personal Relief</mat-label>
+                  <input
+                    matInput
+                    class="right-align"
+                    placeholder="0"
+                    formControlName="personalRelief"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Insurance Relief</mat-label>
+                  <input
+                    matInput
+                    class="right-align"
+                    placeholder="0"
+                    formControlName="insuranceRelief"
+                  />
+                  <span matPrefix>KSH.&nbsp;</span>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button
+              mat-raised-button
+              matStepperNext
+              color="primary"
+              *ngIf="onSalaryNextbtn"
+            >
+              Next
+            </button>
+          </div>
+        </mat-step>
+        <mat-step *ngIf="showSubmitTab">
+          <ng-template matStepLabel>Submit</ng-template>
+          <mat-card>
+            <h2>Submission:</h2>
+            <p>
+              You have reach the final end of outlineing data, ready to Submit
+              Employee data?
+            </p>
+            <br />
+          </mat-card>
+          <div [align]="'end'">
+            <button mat-raised-button matStepperPrevious color="accent">
+              Back
+            </button>
+            <button
+              (click)="onSubmit()"
+           
+             
+              *ngIf="!hideBtn"
+              mat-raised-button
+              [color]="btnColor"
+              type="submit"
+            >
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span
+              >{{ btnText }}
+            </button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </form>
+  </mat-tab>
+  <mat-tab class="mat-tab" label="UPLOAD EMPLOYEE" *ngIf="showUploadTab">
+   
+   <div [align]="center">
+    <div class="col-md-6 col-sm-12 excel-upload">
+      <strong>Upload Employee File</strong>
+    </div>
+  </div>
+    <div class="mx-3 col-6 col-md-6 col-sm-12 excel-upload">
+      <app-upload-employess
+        (change)="onUpload($event)"
+        accept=".xlsx"
+      ></app-upload-employess>
+    </div>
+
+    <div class="container-fluid" *ngIf="this.excelSelected">
+      <div class="row justify-content-center mt-3">
+        <mat-label>First Page preview of Excel File</mat-label>
+      </div>
+      <div class="row justify-content-center mt-3">
+        <table
+          class="table table-striped table-bordered nowrap table-respons mx-3"
+        >
+          <tbody>
+            <tr *ngFor="let row of exceldata">
+              <td *ngFor="let cell of row">
+                {{ cell }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div [align]="'start'">
+      <button mat-raised-button color="accent">Back</button>
+      <button
+        (click)="onSubmitMultiple()"
+        type="submit"
+        mat-raised-button
+        color="primary"
+      >
+        <span
+          *ngIf="loading"
+          class="spinner-border spinner-border-sm mr-1"
+        ></span
+        >UPLOAD
+      </button>
+    </div>
+  </mat-tab>
+
+  <mat-tab class="mat-tab" label="DOCUMENTS UPLOAD" *ngIf="showUploadTab">
+  </mat-tab>
+</mat-tab-group>
