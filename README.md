@@ -1,1 +1,1 @@
-nothing serious here just tria
+nothing serious here just trial and error
